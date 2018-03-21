@@ -153,9 +153,9 @@ public class TestAu {
     assertNull(au.getStatus2());
     assertNull(au.getVolume());
     assertNull(au.getYear());
-    assertEquals(0, au.getParams());
-    assertEquals(0, au.getNondefParams());
-    assertEquals(0, au.getAttrs());
+    assertEquals(0, au.getParams().size());
+    assertEquals(0, au.getNondefParams().size());
+    assertEquals(0, au.getAttrs().size());
     assertNull(au.getImplicit());
     assertNull(au.getArbitraryValue(FOO_KEY));
   }
@@ -201,8 +201,8 @@ public class TestAu {
     assertEquals(ATTR1_VALUE, au.getAttrs().get(ATTR1_KEY));
     assertNull(au.getAttrs().get("X" + ATTR1_KEY));
     au.setImplicit(IMPLICIT_VALUE);
-    fail("The line below fails to compile in Eclipse for no good reason");
-//    assertThat(au.getImplicit(), both(hasSize(3)).and(hasItems("implicit1", "implicit2", "implicit3")));
+    assertThat(au.getImplicit(), hasSize(3));
+    assertThat(au.getImplicit(), hasItems("implicit1", "implicit2", "implicit3"));
     au.put(FOO_KEY, FOO_VALUE);
     assertEquals(FOO_VALUE, au.getArbitraryValue(FOO_KEY));
     assertNull(au.getArbitraryValue("X" + FOO_KEY));
@@ -297,8 +297,8 @@ public class TestAu {
     assertEquals(PARAM1_VALUE, au3.getParams().get(PARAM1_KEY));
     assertEquals(NONDEFPARAM1_VALUE, au3.getNondefParams().get(NONDEFPARAM1_KEY));
     assertEquals(ATTR1_VALUE, au3.getAttrs().get(ATTR1_KEY));
-    fail("The line below fails to compile in Eclipse for no good reason");
-    //    assertThat(au3.getImplicit(), both(hasSize(3)).and(hasItems("implicit1", "implicit2", "implicit3")));
+    assertThat(au3.getImplicit(), hasSize(3));
+    assertThat(au3.getImplicit(), hasItems("implicit1", "implicit2", "implicit3"));
     assertEquals(FOO_VALUE, au3.getArbitraryValue(FOO_KEY));
     assertNull(au3.getArbitraryValue("X" + FOO_KEY));
   }
