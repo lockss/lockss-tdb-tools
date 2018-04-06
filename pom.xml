@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>org.lockss</groupId>
     <artifactId>lockss-parent-pom</artifactId>
-    <version>1.4.0</version>
+    <version>1.7.0</version>
     <relativePath />
   </parent>
 
@@ -50,12 +50,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <name>lockss-tdb-tools</name>
   <description>TDB processing tools</description>
   
-  <properties>
-    <junit.jupiter.version>5.1.0</junit.jupiter.version>
-    <junit.platform.version>1.1.0</junit.platform.version>
-  </properties>
-  
   <dependencies>
+
+    <dependency>
+      <groupId>org.lockss</groupId>
+      <artifactId>lockss-junit5-bundle</artifactId>
+      <version>1.1.0</version>
+      <type>pom</type>
+      <scope>test</scope>
+    </dependency>
   
     <dependency>
       <groupId>com.ibm.icu</groupId>
@@ -81,43 +84,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       <version>3.7</version>
     </dependency>
 
-    <!-- 
-        See JUnit 5 diagram at:
-        http://junit.org/junit5/docs/current/user-guide/#dependency-diagram .
-    -->
-  
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>${junit.jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-runner</artifactId>
-      <version>${junit.platform.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-library</artifactId>
-      <version>1.3</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- 
-        end JUnit 5
-    -->
-
   </dependencies>
 
   <build>
@@ -138,24 +104,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </executions>
       </plugin>
     
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19.1</version><!-- because of https://github.com/junit-team/junit5/issues/809 -->
-        <dependencies>
-          <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>${junit.platform.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.jupiter.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
     </plugins>
-  
+    
   </build>
 
 </project>
