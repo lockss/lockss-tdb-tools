@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>org.lockss</groupId>
     <artifactId>lockss-parent-pom</artifactId>
-    <version>1.7.0</version>
+    <version>1.9.0-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -50,12 +50,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <name>lockss-tdb-tools</name>
   <description>TDB processing tools</description>
   
+  <!-- Must be in every lockss-parent-pom descendant -->
+  <scm>
+    <connection>${scmConnection}</connection>
+    <developerConnection>${scmDeveloperConnection}</developerConnection>
+    <url>${scmUrl}</url>
+  </scm>
+  
+  <properties>
+    <antlr.version>4.5.3</antlr.version>
+  </properties>
+
   <dependencies>
 
     <dependency>
       <groupId>org.lockss</groupId>
       <artifactId>lockss-junit5-bundle</artifactId>
-      <version>1.1.0</version>
+      <version>${lockss.junit5.bundleVersion}</version>
       <type>pom</type>
       <scope>test</scope>
     </dependency>
@@ -75,7 +86,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4-runtime</artifactId>
-      <version>4.5.3</version>
+      <version>${antlr.version}</version>
     </dependency>
   
     <dependency>
@@ -93,7 +104,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
-        <version>4.5.3</version>
+        <version>${antlr.version}</version>
         <executions>
           <execution>
             <id>antlr</id>
