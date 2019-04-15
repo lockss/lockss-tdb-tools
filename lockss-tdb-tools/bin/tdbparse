@@ -1,0 +1,61 @@
+#!/bin/sh
+
+# Copyright (c) 2000-2019, Board of Trustees of Leland Stanford Jr. University
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice,
+# this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+# this list of conditions and the following disclaimer in the documentation
+# and/or other materials provided with the distribution.
+#
+# 3. Neither the name of the copyright holder nor the names of its contributors
+# may be used to endorse or promote products derived from this software without
+# specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+_0="$(basename "${0}")"
+
+PARENT_DIR="$(realpath "$(dirname "${0}")/..")"
+TARGET_DIR="${PARENT_DIR}/target"
+RUN_CLASSPATH_FILE="${TARGET_DIR}/run-classpath"
+CURRENT_JAR_FILE="${TARGET_DIR}/current.jar"
+
+if [ ! -d "${PARENT_DIR}" ] || \
+   [ ! -f "${RUN_CLASSPATH_FILE}" ] || \
+   [ ! -f "${CURRENT_JAR_FILE}" ]; then
+  echo "${0}: lockss-tdb-tools project not built; run:"
+  echo "    mvn package"
+  echo "from ${PARENT_DIR} to build it, then try again"
+  exit 1
+fi
+
+RUN_CLASSPATH="$(cat "${RUN_CLASSPATH_FILE}")"
+# Replace target/classes with current.jar
+RUN_CLASSPATH="${CURRENT_JAR_FILE}:${RUN_CLASSPATH#*:}"
+
+if [ -n "${JAVA_HOME}" ] && [ -d "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ]; then
+  JAVA="${JAVA_HOME}/bin/java"
+elif ! command -v java > /dev/null ; then
+  echo "${_0}: Java executable not found"
+  exit 1
+else
+  JAVA='java'
+fi
+
+$JAVA -Xmx1536m -cp "${RUN_CLASSPATH}" org.lockss.tdb.TdbParse "$@"
