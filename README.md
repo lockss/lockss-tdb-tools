@@ -4,7 +4,7 @@ This project is a collection of projects used to process LOCKSS TDB files. TDB f
 
 It consists of several sub-projects:
 
-*   [**`lockss-tdb-tools`**](lockss-tdb-tools): suite of Java tools to process TDB files
+*   [**`lockss-tdb-processor`**](lockss-tdb-tools): suite of Java tools to process TDB files
 *   [**`lockss-tdbxml-maven-plugin`**](lockss-tdb-tools): Maven plugin to invoke the `tdbxml` tool from `lockss-tdb-tools`
 
 Other TDB-related tools will join this project in the future.
