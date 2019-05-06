@@ -1,4 +1,4 @@
-# `lockss-tdb-tools`
+# `lockss-tdb-processor`
 
 This project is a suite of Java tools to process LOCKSS TDB files.
 
@@ -15,7 +15,7 @@ You must have Git, Java 8 and Maven installed.
 Follow these instructions to build the project:
 
 1.  `git clone https://github.com/lockss/lockss-tdb-tools`
-1.  `cd lockss-tdb-tools/lockss-tdb-tools`
+1.  `cd lockss-tdb-tools/lockss-tdb-processor`
     *   This directory (whose path can be printed by typing `pwd`) is the root of the project.
 1.  `mvn package`
 
