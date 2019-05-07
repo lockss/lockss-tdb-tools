@@ -45,7 +45,7 @@ POSSIBILITY OF SUCH DAMAGE.
   <description>Aggregator for projects related to LOCKSS TDB processing</description>
 
   <modules>
-    <module>lockss-tdb-tools</module>
+    <module>lockss-tdb-processor</module>
     <module>lockss-tdbxml-maven-plugin</module>
   </modules>
 
