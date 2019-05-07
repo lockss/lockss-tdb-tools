@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
   </parent>
 
   <groupId>org.lockss</groupId>
-  <artifactId>lockss-tdb-tools</artifactId>
+  <artifactId>lockss-tdb-processor</artifactId>
   <version>1.2.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   
