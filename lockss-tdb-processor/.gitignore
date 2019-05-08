@@ -1,7 +1,6 @@
-/bin/
+src/generated/
+target/
 /.classpath
 /.project
-/target/
 /.settings/
 /pom.xml.versionsBackup
-/src/generated/java/*
