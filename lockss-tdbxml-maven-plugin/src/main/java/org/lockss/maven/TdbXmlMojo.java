@@ -115,7 +115,7 @@ public class TdbXmlMojo extends AbstractMojo {
       getLog().info("starting tree walk ...");
       Files.walkFileTree(startPath, opts, depth, finder);
     } catch (IOException e) {
-      throw new MojoExecutionException("unable to walk source tree.");
+      throw new MojoExecutionException("unable to walk source tree: " + e);
     }
     getLog().info("Found " +convMap.size() +" tdb files..");
     if (!convMap.isEmpty()) {
@@ -133,9 +133,13 @@ public class TdbXmlMojo extends AbstractMojo {
     }
   }
 
+  public void checkOutDir(File dir) throws MojoExecutionException {
+    if (dir == null || (!dir.exists() && !dir.mkdirs())) {
+      throw new MojoExecutionException("Can't create output dir: " + dir);
+    }
+  }
 
   public void execJavaCmd(Map<File, File> mapFiles) throws MojoExecutionException {
-    List<String> args = new ArrayList<>();
 //    args.add("java"); // command name
 //    args.add("-Xmx1024m");
 //    args.add("-classpath");
@@ -144,10 +148,12 @@ public class TdbXmlMojo extends AbstractMojo {
     if (recurse) {
       int convCount = 0;
       for (Map.Entry<File, File> tofro : mapFiles.entrySet()) {
+	List<String> args = new ArrayList<>();
         File srcFile = tofro.getKey();
         File dstFile = tofro.getValue();
-        getLog().debug("Converting " + srcFile.getAbsolutePath() + "=>" + dstFile.getAbsoluteFile());
+	checkOutDir(dstFile.getParentFile());
         if (isOutOfDate(srcFile, dstFile)) {
+	  getLog().debug("Converting " + srcFile.getAbsolutePath() + " => " + dstFile.getAbsoluteFile());
           args.add("-A");
           args.add("-i");
           args.add(srcFile.getAbsolutePath());
@@ -157,10 +163,13 @@ public class TdbXmlMojo extends AbstractMojo {
             throw new MojoExecutionException("conversion failed.");
           }
           convCount++;
+	} else {
+	  getLog().debug("Skipping " + srcFile.getAbsolutePath() + " => " + dstFile.getAbsoluteFile());
         }
       }
       getLog().info("Converted " + convCount + " tdb files");
     } else {
+      List<String> args = new ArrayList<>();
       args.add("--all");
       args.add("--output-dir=" + dstDir);
       for (File file : mapFiles.keySet()) {
