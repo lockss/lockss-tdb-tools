@@ -39,14 +39,14 @@ POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>org.lockss</groupId>
     <artifactId>lockss-parent-pom</artifactId>
-    <version>1.11.0-SNAPSHOT</version>
+    <version>1.12.0-SNAPSHOT</version>
     <relativePath />
   </parent>
 
   <groupId>org.lockss.laaws</groupId>
   <artifactId>lockss-tdbxml-maven-plugin</artifactId>
+  <version>1.4.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
-  <version>1.3.0-SNAPSHOT</version>
   
   <name>lockss-tdbxml-maven-plugin</name>
   <description>Convert .tdb to .xml Maven Mojo</description>

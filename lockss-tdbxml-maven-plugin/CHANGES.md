@@ -1,6 +1,10 @@
 # Release Notes
 
-## Changes Since 1.2.0
+## Major Changes Since 1.3.0
+
+*   (highlights go here)
+
+## 1.3.0
 
 ### Fixes
 
