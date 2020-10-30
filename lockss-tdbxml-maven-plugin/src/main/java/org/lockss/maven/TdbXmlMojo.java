@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2017 Board of Trustees of Leland Stanford Jr. University,
+ * Copyright (c) 2020 Board of Trustees of Leland Stanford Jr. University,
  * all rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,38 +29,24 @@ package org.lockss.maven;
 import static java.nio.file.FileVisitOption.FOLLOW_LINKS;
 import static java.nio.file.FileVisitResult.CONTINUE;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitOption;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.PathMatcher;
-import java.nio.file.SimpleFileVisitor;
+import java.io.*;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.*;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 @Mojo(name = "tdbxml", requiresDependencyResolution = ResolutionScope.TEST)
 public class TdbXmlMojo extends AbstractMojo {
 
+  @Parameter(property = "skip", defaultValue = "false")
+  private boolean skip;
+  
   @Parameter(property = "srcDir")
   private File srcDir;
 
@@ -78,6 +64,10 @@ public class TdbXmlMojo extends AbstractMojo {
 
   private String classpath;
 
+  public void setSkip(boolean skip) {
+    this.skip = skip;
+  }
+  
   public void setSrcDir(File srcDir) {
     this.srcDir = srcDir;
   }
@@ -96,11 +86,16 @@ public class TdbXmlMojo extends AbstractMojo {
   public void setClasspath(String classpath){this.classpath = classpath; }
 
   public void execute() throws MojoExecutionException {
+    if (skip) {
+      getLog().info("Skipping lockss-tdbxml-maven-plugin per configuration");
+      return;
+    }
+    
     try {
       classpath = String.join(":", project.getTestClasspathElements());
       getLog().debug("Classpath: " + classpath);
-    } catch (DependencyResolutionRequiredException e) {
-      throw new MojoExecutionException("Error while determining the classpath elements", e);
+    } catch (DependencyResolutionRequiredException exc) {
+      throw new MojoExecutionException("Error while determining the classpath elements", exc);
     }
     checkDirs();
     Path startPath = srcDir.toPath();
@@ -112,12 +107,12 @@ public class TdbXmlMojo extends AbstractMojo {
     }
     TdbFindFile finder = new TdbFindFile(srcDir, dstDir, convMap, getLog());
     try {
-      getLog().info("starting tree walk ...");
+      getLog().info("Starting tree walk...");
       Files.walkFileTree(startPath, opts, depth, finder);
-    } catch (IOException e) {
-      throw new MojoExecutionException("unable to walk source tree: " + e);
+    } catch (IOException exc) {
+      throw new MojoExecutionException("Unable to walk source tree: " + exc.getMessage(), exc);
     }
-    getLog().info("Found " +convMap.size() +" tdb files..");
+    getLog().info(String.format("Found %d TDB files", convMap.size()));
     if (!convMap.isEmpty()) {
       execJavaCmd(convMap);
     }
@@ -153,21 +148,21 @@ public class TdbXmlMojo extends AbstractMojo {
         File dstFile = tofro.getValue();
 	checkOutDir(dstFile.getParentFile());
         if (isOutOfDate(srcFile, dstFile)) {
-	  getLog().debug("Converting " + srcFile.getAbsolutePath() + " => " + dstFile.getAbsoluteFile());
+          getLog().debug(String.format("Converting %s => %s", srcFile.getAbsolutePath(), dstFile.getAbsoluteFile()));
           args.add("-A");
           args.add("-i");
           args.add(srcFile.getAbsolutePath());
           args.add("-o");
           args.add(dstFile.getAbsolutePath());
           if(runProcess(args) != 0 && throwOnFail) {
-            throw new MojoExecutionException("conversion failed.");
+            throw new MojoExecutionException("Conversion failed");
           }
           convCount++;
 	} else {
-	  getLog().debug("Skipping " + srcFile.getAbsolutePath() + " => " + dstFile.getAbsoluteFile());
+          getLog().debug(String.format("Skipping %s => %s", srcFile.getAbsolutePath(), dstFile.getAbsoluteFile()));
         }
       }
-      getLog().info("Converted " + convCount + " tdb files");
+      getLog().info(String.format("Converted %d TDB files", convCount));
     } else {
       List<String> args = new ArrayList<>();
       args.add("--all");
@@ -176,9 +171,9 @@ public class TdbXmlMojo extends AbstractMojo {
         args.add(file.getAbsolutePath());
       }
       if(runProcess(args) != 0 && throwOnFail) {
-        throw new MojoExecutionException("conversion failed.");
+        throw new MojoExecutionException("Conversion failed");
       }
-      getLog().info("Converted all tdb files.");
+      getLog().info("Converted all TDB files");
     }
   }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2000-2017 Board of Trustees of Leland Stanford Jr. University,
+  ~ Copyright (c) 2020 Board of Trustees of Leland Stanford Jr. University,
   ~ all rights reserved.
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,13 +25,18 @@
   ~ in this Software without prior written authorization from Stanford University.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.lockss.maven.it</groupId>
-  <artifactId>simple-it</artifactId>
+  <groupId>org.lockss</groupId>
+  <artifactId>tdbxml-maven-tester</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>lockss-tdbxml-maven-plugin-ittest</name>
+  <description>LOCKSS TDB Maven Plugin Integration Test</description>
 
   <description>A simple IT verifying the basic use case.</description>
 
