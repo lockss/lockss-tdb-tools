@@ -32,13 +32,13 @@
   <parent>
     <groupId>org.lockss</groupId>
     <artifactId>lockss-parent-pom</artifactId>
-    <version>1.12.0</version>
+    <version>1.12.0-SNAPSHOT</version>
     <relativePath />
   </parent>
 
   <groupId>org.lockss.laaws</groupId>
   <artifactId>lockss-tdbxml-maven-plugin</artifactId>
-  <version>1.4.0</version>
+  <version>1.4.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   
   <name>lockss-tdbxml-maven-plugin</name>
