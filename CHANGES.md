@@ -1,11 +1,21 @@
-# Release Notes
+# `lockss-tdb-tools` Release Notes
 
-## Major Changes Since 1.2.0
+## Changes Since 1.3.0
 
-*   (highlights go here)
+*   ...
+
+## 1.3.0
+
+### Features
+
+*   ...
+
+### Fixes
+
+*   ...
 
 ## 1.2.0
 
 ### Features
 
-*   `lockss-tdbxml-maven-plugin` 1.3.0
+*   `lockss-tdbxml-maven-plugin` 1.3.0.
