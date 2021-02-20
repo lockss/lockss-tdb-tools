@@ -67,12 +67,6 @@ POSSIBILITY OF SUCH DAMAGE.
     </dependency>
   
     <dependency>
-      <groupId>com.ibm.icu</groupId>
-      <artifactId>icu4j</artifactId>
-      <version>${version.group.icu4j}</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4-runtime</artifactId>
       <version>${version.group.antlr}</version>
@@ -92,8 +86,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <dependency>
       <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>${version.dependency.commons-lang3}</version>
+      <artifactId>commons-text</artifactId>
+      <version>${version.dependency.commons-text}</version>
     </dependency>
 
   </dependencies>
