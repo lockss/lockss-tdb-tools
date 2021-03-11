@@ -35,6 +35,8 @@ package org.lockss.tdb;
 import java.io.*;
 import java.util.*;
 
+import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
+
 /**
  * Temporary until a few things are in lockss-util or similar.
  */
@@ -72,7 +74,7 @@ public class TdbUtil {
   public static String encode(String str) {
     int maxBytesPerChar = 10;
     StringBuffer out = new StringBuffer(str.length());
-    ByteArrayOutputStream buf = new ByteArrayOutputStream(maxBytesPerChar);
+    UnsynchronizedByteArrayOutputStream buf = new UnsynchronizedByteArrayOutputStream(maxBytesPerChar);
     OutputStreamWriter writer = new OutputStreamWriter(buf);
     
     for (int i = 0, len = str.length(); i < len; i++) {
