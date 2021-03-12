@@ -4,3 +4,4 @@ target/
 /.project
 /.settings/
 /pom.xml.versionsBackup
+/.surefire-*
