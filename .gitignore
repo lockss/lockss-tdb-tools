@@ -5,3 +5,7 @@
 /.settings/
 /pom.xml.versionsBackup
 /src/generated/java/*
+
+/pom.xml.bak
+/*/pom.xml.bak
+/.surefire-*

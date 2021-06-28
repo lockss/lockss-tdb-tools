@@ -50,4 +50,18 @@ public class TestTdbXml {
     assertEquals("foo&#127;bar", TdbXml.xmlEscaper.translate("foo\u007fbar")); // hex 7F = dec 127
   }
   
+  @Test
+  public void testUnicodeNormalizer() throws Exception {
+    assertEquals("aeiou", TdbXml.unicodeNormalizer.apply("aeiou"));
+    assertEquals("aeiou", TdbXml.unicodeNormalizer.apply("\u00e1\u00e8\u00ee\u00f5\u00fc")); // a acute, e grave, i circumflex, o tilde, u umlaut
+    
+    // 'a' modified with every combining diacritical mark
+    StringBuilder sb = new StringBuilder();
+    sb.append('a');
+    for (char c = '\u0300' ; c <= '\u036f' ; ++c) {
+      sb.append(c);
+    }
+    assertEquals("a", TdbXml.unicodeNormalizer.apply(sb.toString()));
+  }
+  
 }
