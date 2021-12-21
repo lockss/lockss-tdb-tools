@@ -39,13 +39,13 @@ POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>org.lockss</groupId>
     <artifactId>lockss-parent-pom</artifactId>
-    <version>1.13.0</version>
+    <version>1.14.0</version>
     <relativePath />
   </parent>
 
   <groupId>org.lockss</groupId>
   <artifactId>lockss-tdb-processor</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
   <packaging>jar</packaging>
   
   <name>lockss-tdb-processor</name>
