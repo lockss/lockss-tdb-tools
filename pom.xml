@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-Copyright (c) 2000-2021, Board of Trustees of Leland Stanford Jr. University
-All rights reserved.
+Copyright (c) 2000-2023, Board of Trustees of Leland Stanford Jr. University
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -38,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
   <groupId>org.lockss</groupId>
   <artifactId>lockss-tdb-tools</artifactId>
-  <version>1.5.0</version>
+  <version>1.6.0</version>
   <packaging>pom</packaging>
   
   <name>lockss-tdb-tools</name>

@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2000-2018, Board of Trustees of Leland Stanford Jr. University,
+Copyright (c) 2000-2022, Board of Trustees of Leland Stanford Jr. University,
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -39,7 +39,6 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.cli.*;
-import org.lockss.tdb.AntlrUtil.NamedAntlrInputStream;
 import org.lockss.tdb.Predicates.*;
 import org.lockss.tdb.TdbQueryParser.*;
 
@@ -77,7 +76,7 @@ public class TdbQueryBuilder extends TdbQueryParserBaseListener {
    * 
    * @since 1.68
    */
-  public static final String VERSION = "[TdbQueryBuilder:0.2.4]";
+  public static final String VERSION = "[TdbQueryBuilder:0.3.1]";
   
   /**
    * <p>
@@ -161,7 +160,7 @@ public class TdbQueryBuilder extends TdbQueryParserBaseListener {
    * <p>
    * Key for the any-and-all option ({@value}).
    * </p>
-   * 
+   * LX Plugin in Development
    * @since 1.70
    */
   protected static final String KEY_ANY_AND_ALL = "any-and-all";
@@ -653,71 +652,101 @@ public class TdbQueryBuilder extends TdbQueryParserBaseListener {
    * @since 1.67
    */
   public static final List<String> NON_ALLIANCE_PLUGINS =
-      AppUtil.ul("edu.columbia.plugin.JiwsPlugin",
-                 "edu.cornell.library.epr.EPRPlugin2001",
-                 "edu.cornell.library.epr.EPRPlugin2002On",
-                 "edu.cornell.library.jbe.JBEPlugin",
-                 "edu.fcla.plugin.arkivoc.ArkivocPlugin",
-                 "edu.harvard.plugin.AppliedSemiotics.AppliedSemioticsPlugin",
-                 "edu.harvard.plugin.jrs.JRSPlugin",
-                 "edu.harvard.plugin.WorldHaikuReview.WorldHaikuReviewPlugin",
-                 "edu.indiana.lib.plugin.jcjpc.JcjpcPlugin",
-                 "edu.indiana.lib.plugin.mto.MTOPlugin",
-                 "edu.jhu.library.plugin.jrf.JournalOfReligionAndFilmPlugin",
-                 "edu.jhu.library.plugin.MedievalForumPlugin",
-                 "edu.nyu.plugin.bonefolder.BonefolderPlugin",
-                 "edu.nyu.plugin.ejce.EJCEPlugin",
-                 "edu.nyu.plugin.ejcjs.EJCJSPlugin",
-                 "edu.nyu.plugin.heplwebzine.HEPLwebzine",
-                 "edu.nyu.plugin.journalofglobalbuddhism.JournalOfGlobalBuddhismPlugin",
-                 "edu.nyu.plugin.LeedsICSPlugin",
-                 "edu.princeton.plugin.bmcr.BMCRPlugin",
-                 "edu.princeton.plugin.ncaw.19thCenturyArtWorldwidePlugin",
-                 "edu.stanford.plugin.exquisitecorpse.ExquisiteCorpsePlugin",
-                 "edu.upenn.library.plugin.annualofurdustudies.AnnualOfUrduStudiesPlugin",
-                 "edu.upenn.library.plugin.clcweb.CLCWebPlugin",
-                 "edu.wisc.library.plugin.BigBridgePlugin",
-                 "edu.wisc.library.plugin.BigBridgeVol1Plugin",
-                 "edu.wisc.library.plugin.CortlandReviewPlugin",
-                 "edu.wisc.library.plugin.CortlandReview00Plugin",
-                 "edu.wisc.library.plugin.CortlandReview98Plugin",
-                 "edu.wisc.library.plugin.CortlandReview99Plugin",
-                 "edu.yale.library.lockss.plugin.intermarium.IntermariumPlugin",
-                 "edu.yale.library.lockss.plugin.mitejmes.MITEJMESPlugin",
-                 "gov.loc.plugin.CJPentecostalCharismaticResearchPlugin",
-                 "gov.loc.plugin.TESLEJPlugin",
-                 "nz.ac.otago.plugin.scholia.ScholiaPlugin",
-                 "org.lockss.plugin.absinthe.AbsinthePlugin",
-                 "org.lockss.plugin.bepress.BePressPlugin",
-                 "org.lockss.plugin.bioone.BioOnePlugin",
-                 "org.lockss.plugin.blackbird.BlackbirdPlugin",
-                 "org.lockss.plugin.clogic.CulturalLogicPlugin",
-                 "org.lockss.plugin.disputatio.DisputatioPlugin",
-                 "org.lockss.plugin.emc.EarlyModernCulturePlugin",
-                 "org.lockss.plugin.emls.EmlsPlugin",
-                 "org.lockss.plugin.evergreenreview.EvergreenReviewPlugin",
-                 "org.lockss.plugin.GendersPlugin",
-                 "org.lockss.plugin.histcoop.HistoryCooperativePlugin",
-                 "org.lockss.plugin.invisibleculture.InvisibleCulturePlugin",
-                 "org.lockss.plugin.jackmagazine.JackMagazinePlugin",
-                 "org.lockss.plugin.jscm.JSCMPlugin",
-                 "org.lockss.plugin.lapetitezine.LaPetiteZinePlugin",
-                 "org.lockss.plugin.locksscard.LockssCardPlugin",
-                 "org.lockss.plugin.madhattersreview.MadHattersReviewPlugin",
-                 "org.lockss.plugin.minerva.MinervaPlugin",
-                 "org.lockss.plugin.minerva.Minerva2020Plugin",
-                 "org.lockss.plugin.msr.MSRPlugin",
-                 "org.lockss.plugin.ojs.OJSPlugin",
-                 "org.lockss.plugin.othervoices.OtherVoicesPlugin",
-                 "org.lockss.plugin.projmuse.ProjectMusePlugin",
-                 "org.lockss.plugin.prok.ProkPlugin",
-                 "org.molvis.plugin.MolVisPlugin",
-                 "org.lockss.plugin.sfpoetrybroadside.SantaFePoetryBroadsidePlugin",
-                 "org.nypl.plugin.failbetter.FailbetterPlugin",
-                 "org.nypl.plugin.PoetryBayPlugin",
-                 "org.nypl.plugin.shampoo.ShampooPlugin",
-                 "org.nypl.plugin.WordsWithoutBordersPlugin",
-                 "za.ac.nlsa.lockss.plugin.WaterSAPlugin");
+      AppUtil.ul(// (keep releaseemail.py in sync)
+                 "edu.columbia.plugin.JiwsPlugin", // humanities
+                 "edu.cornell.library.epr.EPRPlugin2001", // humanities
+                 "edu.cornell.library.epr.EPRPlugin2002On", // humanities
+                 "edu.cornell.library.epr.EPRPlugin", // humanities
+                 "edu.cornell.library.jbe.JBEPlugin", // humanities
+                 "edu.fcla.plugin.arkivoc.ArkivocPlugin", // prod
+                 "edu.fcla.plugin.arkivoc.Arkivoc2022Plugin", // prod
+                 "edu.harvard.plugin.AppliedSemiotics.AppliedSemioticsPlugin", // humanities
+                 "edu.harvard.plugin.AppliedSemiotics.AppliedSemiotics2022Plugin", // humanities
+                 "edu.harvard.plugin.jrs.JRSPlugin", // humanities
+                 "edu.harvard.plugin.jrs.JRS2022Plugin", // humanities
+                 "edu.harvard.plugin.WorldHaikuReview.WorldHaikuReviewPlugin", // humanities
+                 "edu.indiana.lib.plugin.jcjpc.JcjpcPlugin", // humanities
+                 "edu.indiana.lib.plugin.mto.MTOPlugin", // humanities
+                 "edu.indiana.lib.plugin.mto.MTO2022Plugin", // humanities
+                 "edu.jhu.library.plugin.jrf.JournalOfReligionAndFilmPlugin", // humanities
+                 "edu.jhu.library.plugin.MedievalForumPlugin", // humanities
+                 "edu.nyu.plugin.LeedsICSPlugin", // humanities
+                 "edu.nyu.plugin.bonefolder.BonefolderPlugin", // humanities
+                 "edu.nyu.plugin.ejce.EJCEPlugin", // humanities
+                 "edu.nyu.plugin.ejcjs.EJCJSPlugin", // humanities
+                 "edu.nyu.plugin.ejcjs.EJCJS2022Plugin", // humanities
+                 "edu.nyu.plugin.heplwebzine.HEPLwebzine", // humanities
+                 "edu.nyu.plugin.heplwebzine.HEPLWebzine2022Plugin", // humanities
+                 "edu.nyu.plugin.journalofglobalbuddhism.JournalOfGlobalBuddhismPlugin", // humanities
+                 "edu.princeton.plugin.bmcr.BMCRPlugin", // humanities
+                 "edu.princeton.plugin.ncaw.19thCenturyArtWorldwidePlugin", // humanities
+                 "edu.stanford.plugin.exquisitecorpse.ExquisiteCorpsePlugin", // humanities
+                 "edu.upenn.library.plugin.annualofurdustudies.AnnualOfUrduStudiesPlugin", // humanities
+                 "edu.upenn.library.plugin.clcweb.CLCWebPlugin", // humanities
+                 "edu.wisc.library.plugin.BigBridgePlugin", // humanities
+                 "edu.wisc.library.plugin.BigBridgeVol1Plugin", // humanities
+                 "edu.wisc.library.plugin.CortlandReviewPlugin", // humanities
+                 "edu.wisc.library.plugin.CortlandReview00Plugin", // humanities
+                 "edu.wisc.library.plugin.CortlandReview98Plugin", // humanities
+                 "edu.wisc.library.plugin.CortlandReview99Plugin", // humanities
+                 "edu.yale.library.lockss.plugin.intermarium.IntermariumPlugin", // humanities
+                 "edu.yale.library.lockss.plugin.mitejmes.MITEJMESPlugin", // humanities
+                 "gov.gpo.access.permanent.plugin.amberwaves.Amber_WavesPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.environmentalhealthperspectives.Environmental_Health_PerspectivesPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.environmentalhealthperspectives.EHP2022AtyponJournalPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.fbilawenforcementbulletin.FBI_Law_Enforcement_BulletinPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.humanities.HumanitiesPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.monthlyenergyreview.MonthlyEnergyReviewPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.monthlylaborreview.MonthlyLaborReviewPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.monthlylaborreview.MonthlyLaborReview2022Plugin", // gpo
+                 "gov.gpo.access.permanent.plugin.nistjournalofresearch.NISTJournalOfResearchPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.socialsecuritybulletin.SocialSecurityBulletinPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.surveyofcurrentbusiness.SurveyOfCurrentBusinessPlugin", // gpo
+                 "gov.gpo.access.permanent.plugin.treasurybulletin.TreasuryBulletinPlugin", // gpo
+                 "gov.loc.plugin.CJPentecostalCharismaticResearchPlugin", // humanities
+                 "gov.loc.plugin.TESLEJPlugin", // humanities
+                 "gov.loc.plugin.TESLEJ2022Plugin", // humanities
+                 "nz.ac.otago.plugin.scholia.ScholiaPlugin", // humanities
+                 "org.lockss.plugin.GendersPlugin", // humanities
+                 "org.lockss.plugin.absinthe.AbsinthePlugin", // inaugural
+                 "org.lockss.plugin.bepress.BePressPlugin", // inaugural
+                 "org.lockss.plugin.bepress.BerkeleyElectronicPressSectionPlugin", // inaugural
+                 "org.lockss.plugin.bioone.BioOnePlugin", // inaugural
+                 "org.lockss.plugin.blackbird.BlackbirdPlugin", // humanities
+                 "org.lockss.plugin.clogic.CulturalLogicPlugin", // inaugural
+                 "org.lockss.plugin.disputatio.DisputatioPlugin", // inaugural
+                 "org.lockss.plugin.emc.EarlyModernCulturePlugin", // humanities
+                 "org.lockss.plugin.emls.EmlsPlugin", // inaugural
+                 "org.lockss.plugin.etd.fsuplugin.FSUETDPlugin", // aserl
+                 "org.lockss.plugin.etd.gatechplugin.GATechETDPlugin", // aserl
+                 "org.lockss.plugin.etd.ncstateplugin.NCStateETDLegacyPlugin", // aserl
+                 "org.lockss.plugin.etd.ukyplugin.UKYETDPlugin", // aserl
+                 "org.lockss.plugin.etd.vanderbiltetdplugin.VanderbiltETDPlugin", // aserl
+                 "org.lockss.plugin.etd.vtetdplugin.VTETDLegacyPlugin", // aserl
+                 "org.lockss.plugin.evergreenreview.EvergreenReviewPlugin", // humanities
+                 "org.lockss.plugin.histcoop.HistoryCooperativePlugin", // inaugural
+                 "org.lockss.plugin.invisibleculture.InvisibleCulturePlugin", // humanities
+                 "org.lockss.plugin.jackmagazine.JackMagazinePlugin", // humanities
+                 "org.lockss.plugin.jscm.JSCMPlugin", // humanities
+                 "org.lockss.plugin.lapetitezine.LaPetiteZinePlugin", // humanities
+                 "org.lockss.plugin.locksscard.LockssCardPlugin", // inaugural
+                 "org.lockss.plugin.madhattersreview.MadHattersReviewPlugin", // humanities
+                 "org.lockss.plugin.minerva.MinervaPlugin", // humanities
+                 "org.lockss.plugin.minerva.Minerva2020Plugin", // humanities
+                 "org.lockss.plugin.msr.MSRPlugin", // inaugural
+                 "org.lockss.plugin.ojs.OJSPlugin", // inaugural
+                 "org.lockss.plugin.othervoices.OtherVoicesPlugin", // inaugural
+                 "org.lockss.plugin.projmuse.ProjectMusePlugin", // inaugural
+                 "org.lockss.plugin.prok.ProkPlugin", // humanities
+                 "org.lockss.plugin.sfpoetrybroadside.SantaFePoetryBroadsidePlugin", // humanities
+                 "org.molvis.plugin.MolVisPlugin", // inaugural
+                 "org.molvis.plugin.MolecularVisionPlugin", // inaugural
+                 "org.nypl.plugin.PoetryBayPlugin", // humanities
+                 "org.nypl.plugin.WordsWithoutBordersPlugin", // humanities
+                 "org.nypl.plugin.failbetter.FailbetterPlugin", // humanities
+                 "org.nypl.plugin.shampoo.ShampooPlugin", // humanities
+                 "za.ac.nlsa.lockss.plugin.WaterSAPlugin" // humanities
+                 );
   
   /**
    * <p>
@@ -1334,7 +1363,7 @@ public class TdbQueryBuilder extends TdbQueryParserBaseListener {
     Predicate<Au> queryPredicate = null;
     if (cmd.hasOption(KEY_QUERY)) {
       String query = cmd.getOptionValue(KEY_QUERY);
-      CharStream charStream = new NamedAntlrInputStream("<query>", query);
+      CharStream charStream = CharStreams.fromString(query, "<query>");
       TdbQueryLexer lexer = new TdbQueryLexer(charStream);
       AntlrUtil.setEmacsErrorListener(lexer);
       CommonTokenStream tokens = new CommonTokenStream(lexer);
