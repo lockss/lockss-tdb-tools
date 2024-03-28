@@ -32,6 +32,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 package org.lockss.tdb;
 
+import java.util.function.Predicate;
+
 /**
  * <p>
  * Useful {@link Predicate} utilities.

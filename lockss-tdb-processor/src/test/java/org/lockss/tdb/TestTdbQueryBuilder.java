@@ -35,6 +35,7 @@ package org.lockss.tdb;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 import org.lockss.tdb.AntlrUtil.SyntaxError;
@@ -55,7 +56,7 @@ public class TestTdbQueryBuilder {
     tdbq.processCommandLine(options, cmd);
     Predicate<Au> predicate = tdbq.getAuPredicate(options);
     assertNotNull(predicate);
-    assertTrue(predicate instanceof TruePredicate);
+    assertTrue(predicate.test(null));
   }
   
   @Test

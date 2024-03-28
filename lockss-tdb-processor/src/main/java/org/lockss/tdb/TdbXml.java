@@ -37,6 +37,7 @@ import java.nio.charset.*;
 import java.text.*;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.*;
 
 import org.apache.commons.cli.*;
@@ -450,7 +451,15 @@ public class TdbXml {
        */
       // AU name
       String plugin = au.getComputedPlugin();
+      if (plugin == null) {
+        AppUtil.warning(options, null, "%s:%d: AU has no plugin (or pluginPrefix+pluginSuffix)", au.getFile(), au.getLine());
+        KeepGoing.addError(options, new NullPointerException());
+      }
       String auName = au.getName();
+      if (auName == null) {
+        AppUtil.warning(options, null, "%s:%d: AU has no name", au.getFile(), au.getLine());
+        KeepGoing.addError(options, new NullPointerException());
+      }
       String escapedAuName = xmlEscaper.translate(auName);
       StringBuilder ausb = new StringBuilder();
       computeAuShortName(ausb, plugin, auName);
