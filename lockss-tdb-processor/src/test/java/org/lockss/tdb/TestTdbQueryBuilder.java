@@ -39,7 +39,6 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 import org.lockss.tdb.AntlrUtil.SyntaxError;
-import org.lockss.tdb.Predicates.TruePredicate;
 
 public class TestTdbQueryBuilder {
 
@@ -72,7 +71,6 @@ public class TestTdbQueryBuilder {
     tdbq.processCommandLine(options, cmd);
     Predicate<Au> predicate = tdbq.getAuPredicate(options);
     assertNotNull(predicate);
-    assertFalse(predicate instanceof TruePredicate);
     for (String plu : TdbQueryBuilder.NON_ALLIANCE_PLUGINS) {
       Au au;
       au = new Au(null);
@@ -97,7 +95,6 @@ public class TestTdbQueryBuilder {
     tdbq.processCommandLine(options, cmd);
     Predicate<Au> predicate = tdbq.getAuPredicate(options);
     assertNotNull(predicate);
-    assertFalse(predicate instanceof TruePredicate);
     for (String plu : TdbQueryBuilder.NON_ALLIANCE_PLUGINS) {
       Au au;
       au = new Au(null);

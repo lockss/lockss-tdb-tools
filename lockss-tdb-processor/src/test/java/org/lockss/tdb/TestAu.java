@@ -368,7 +368,7 @@ public class TestAu {
     
     au.put(Au.PLUGIN, PLUGIN1);
     assertEquals(PLUGIN1, Au.traitFunctor("au:plugin").apply(au));
-    assertSame(Au.traitFunctor("au:plugin"), Au.traitFunctor("plugin"));
+    assertEquals(PLUGIN1, Au.traitFunctor("plugin").apply(au));
     au.put(String.format("param[%s]", PARAM2_KEY), PARAM2_VALUE);
     au.put(String.format("nondefparam[%s]", NONDEFPARAM2_KEY), NONDEFPARAM2_VALUE);
     assertEquals(AUID1, Au.traitFunctor("au:auid").apply(au));
@@ -409,7 +409,7 @@ public class TestAu {
     // Test publisher traits
     publisherMap.put(Publisher.NAME, TestPublisher.NAME_VALUE);
     assertEquals(TestPublisher.NAME_VALUE, Au.traitFunctor("publisher:name").apply(au));
-    assertSame(Au.traitFunctor("publisher:name"), Au.traitFunctor("publisher"));
+    assertEquals(TestPublisher.NAME_VALUE, Au.traitFunctor("publisher").apply(au));
     publisherMap.put(TestPublisher.FOO_KEY, TestPublisher.FOO_VALUE);
     assertEquals(TestPublisher.FOO_VALUE, Au.traitFunctor(String.format("publisher:%s", TestPublisher.FOO_KEY)).apply(au));
     assertNull(Au.traitFunctor(String.format("publisher:X%s", TestPublisher.FOO_KEY)).apply(au));
