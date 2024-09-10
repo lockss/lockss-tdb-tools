@@ -1,32 +1,32 @@
 /*
 
-Copyright (c) 2000-2022, Board of Trustees of Leland Stanford Jr. University,
-All rights reserved.
+Copyright (c) 2000-2024, Board of Trustees of Leland Stanford Jr. University
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-1. Redistributions of source code must retain the above copyright notice, this
-list of conditions and the following disclaimer.
+1. Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
 
 2. Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation and/or
-other materials provided with the distribution.
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
 
 3. Neither the name of the copyright holder nor the names of its contributors
 may be used to endorse or promote products derived from this software without
 specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
 
 */
 
@@ -35,10 +35,10 @@ package org.lockss.tdb;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 import org.lockss.tdb.AntlrUtil.SyntaxError;
-import org.lockss.tdb.Predicates.TruePredicate;
 
 public class TestTdbQueryBuilder {
 
@@ -55,7 +55,7 @@ public class TestTdbQueryBuilder {
     tdbq.processCommandLine(options, cmd);
     Predicate<Au> predicate = tdbq.getAuPredicate(options);
     assertNotNull(predicate);
-    assertTrue(predicate instanceof TruePredicate);
+    assertTrue(predicate.test(null));
   }
   
   @Test
@@ -71,7 +71,6 @@ public class TestTdbQueryBuilder {
     tdbq.processCommandLine(options, cmd);
     Predicate<Au> predicate = tdbq.getAuPredicate(options);
     assertNotNull(predicate);
-    assertFalse(predicate instanceof TruePredicate);
     for (String plu : TdbQueryBuilder.NON_ALLIANCE_PLUGINS) {
       Au au;
       au = new Au(null);
@@ -96,7 +95,6 @@ public class TestTdbQueryBuilder {
     tdbq.processCommandLine(options, cmd);
     Predicate<Au> predicate = tdbq.getAuPredicate(options);
     assertNotNull(predicate);
-    assertFalse(predicate instanceof TruePredicate);
     for (String plu : TdbQueryBuilder.NON_ALLIANCE_PLUGINS) {
       Au au;
       au = new Au(null);

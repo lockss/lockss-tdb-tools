@@ -1,32 +1,32 @@
 /*
 
-Copyright (c) 2000-2022, Board of Trustees of Leland Stanford Jr. University,
-All rights reserved.
+Copyright (c) 2000-2024, Board of Trustees of Leland Stanford Jr. University
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-1. Redistributions of source code must retain the above copyright notice, this
-list of conditions and the following disclaimer.
+1. Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
 
 2. Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation and/or
-other materials provided with the distribution.
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
 
 3. Neither the name of the copyright holder nor the names of its contributors
 may be used to endorse or promote products derived from this software without
 specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
 
 */
 
@@ -37,6 +37,7 @@ import java.nio.charset.*;
 import java.text.*;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.*;
 
 import org.apache.commons.cli.*;
@@ -53,7 +54,7 @@ public class TdbXml {
    * 
    * @since 1.68
    */
-  public static final String VERSION = "[TdbXml:0.3.1]";
+  public static final String VERSION = "[TdbXml:0.3.2]";
   
   /**
    * <p>
@@ -388,6 +389,7 @@ public class TdbXml {
     Publisher currentPub = null;
     String escapedPublisherName = null;
     String escapedPublisherNameNoDots = null;
+    String escapedComputedPublisherName = null;
     Title currentTitle = null;
     String escapedTitleName = null;
     String titleIssn = null;
@@ -450,7 +452,15 @@ public class TdbXml {
        */
       // AU name
       String plugin = au.getComputedPlugin();
+      if (plugin == null) {
+        AppUtil.warning(options, null, "%s:%d: AU has no plugin (or pluginPrefix+pluginSuffix)", au.getFile(), au.getLine());
+        KeepGoing.addError(options, new NullPointerException());
+      }
       String auName = au.getName();
+      if (auName == null) {
+        AppUtil.warning(options, null, "%s:%d: AU has no name", au.getFile(), au.getLine());
+        KeepGoing.addError(options, new NullPointerException());
+      }
       String escapedAuName = xmlEscaper.translate(auName);
       StringBuilder ausb = new StringBuilder();
       computeAuShortName(ausb, plugin, auName);
@@ -458,7 +468,8 @@ public class TdbXml {
       ausb = null; // in case ausb accidentally gets re-used below instead of sb
       
       sb.append("  <property name=\""); sb.append(escapedAuNameShort); sb.append("\">\n");
-      appendOneAttr(sb, "publisher", escapedPublisherName);
+      escapedComputedPublisherName = xmlEscaper.translate(au.getComputedPublisher());
+      appendOneAttr(sb, "publisher", escapedComputedPublisherName);
       sb.append("   <property name=\"journalTitle\" value=\""); sb.append(escapedTitleName); sb.append("\" />\n");
       if (titleIssn != null) {
         sb.append("   <property name=\"issn\" value=\""); sb.append(titleIssn); sb.append("\" />\n");
