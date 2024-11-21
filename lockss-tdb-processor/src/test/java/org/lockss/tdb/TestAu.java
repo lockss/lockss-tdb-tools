@@ -394,7 +394,7 @@ public class TestAu {
     // Test title traits
     titleMap.put(Title.NAME, TestTitle.NAME_VALUE);
     assertEquals(TestTitle.NAME_VALUE, Au.traitFunctor("title:name").apply(au));
-    assertSame(Au.traitFunctor("title:name"), Au.traitFunctor("title"));
+    assertEquals(TestTitle.NAME_VALUE, Au.traitFunctor("title").apply(au)); // FIXME doesn't test a computed title name
     titleMap.put(Title.DOI, TestTitle.DOI_VALUE);
     assertEquals(TestTitle.DOI_VALUE, Au.traitFunctor("title:doi").apply(au));
     titleMap.put(Title.EISSN, TestTitle.EISSN_VALUE);
@@ -416,7 +416,7 @@ public class TestAu {
     // Test publisher traits
     publisherMap.put(Publisher.NAME, TestPublisher.NAME_VALUE);
     assertEquals(TestPublisher.NAME_VALUE, Au.traitFunctor("publisher:name").apply(au));
-    assertEquals(TestPublisher.NAME_VALUE, Au.traitFunctor("publisher").apply(au));
+    assertEquals(TestPublisher.NAME_VALUE, Au.traitFunctor("publisher").apply(au)); // FIXME doesn't test a computed publisher name
     publisherMap.put(TestPublisher.FOO_KEY, TestPublisher.FOO_VALUE);
     assertEquals(TestPublisher.FOO_VALUE, Au.traitFunctor(String.format("publisher:%s", TestPublisher.FOO_KEY)).apply(au));
     assertNull(Au.traitFunctor(String.format("publisher:X%s", TestPublisher.FOO_KEY)).apply(au));
