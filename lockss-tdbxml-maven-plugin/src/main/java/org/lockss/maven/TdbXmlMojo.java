@@ -41,7 +41,9 @@ import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
 
-@Mojo(name = "tdbxml", requiresDependencyResolution = ResolutionScope.TEST)
+@Mojo(name = "tdbxml",
+      threadSafe = true,
+      requiresDependencyResolution = ResolutionScope.TEST)
 public class TdbXmlMojo extends AbstractMojo {
 
   @Parameter(property = "skip", defaultValue = "false")
