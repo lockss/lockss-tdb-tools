@@ -1,8 +1,11 @@
 # `lockss-tdbxml-maven-plugin` Release Notes
 
-## Changes Since 1.3.0
+## 1.10.0 (LOCKSS 2.0.91-beta2)
 
-*   ...
+### Features
+
+* Mark thread safe.
+
 
 ## 1.3.0
 

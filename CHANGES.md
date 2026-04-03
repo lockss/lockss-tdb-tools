@@ -1,18 +1,6 @@
 # `lockss-tdb-tools` Release Notes
+No longer maintained. See change logs of individual sub-projects.
 
-## Changes Since 1.3.0
-
-*   ...
-
-## 1.3.0
-
-### Features
-
-*   ...
-
-### Fixes
-
-*   ...
 
 ## 1.2.0
 
