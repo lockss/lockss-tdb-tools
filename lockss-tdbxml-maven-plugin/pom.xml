@@ -57,7 +57,7 @@ POSSIBILITY OF SUCH DAMAGE.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>${version.group.maven}</version>
+        <version>${version.plugin.maven-plugin-plugin}</version>
         <configuration>
           <!-- By default an exception is throw if no mojo descriptor is found.
             As the maven-plugin is defined in core, the descriptor generator mojo is
@@ -98,7 +98,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>${version.group.maven}</version>
+      <version>${version.plugin.maven-plugin-plugin}</version>
       <scope>provided</scope>
     </dependency>
     
