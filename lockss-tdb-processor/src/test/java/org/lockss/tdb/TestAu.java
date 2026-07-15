@@ -43,6 +43,7 @@ import org.junit.jupiter.api.Test;
 public class TestAu {
 
   public static final String NAME_VALUE = "AU Name";
+  public static final String DOI_VALUE = "AU DOI Value";
   public static final String EDITION_VALUE = "Edition Value";
   public static final String EISBN_VALUE = "eISBN Value";
   public static final String ISBN_VALUE = "ISBN Value";
@@ -90,6 +91,7 @@ public class TestAu {
 
   @Test
   public void testKeys() throws Exception {
+    assertEquals("doi", Au.DOI);
     assertEquals("edition", Au.EDITION);
     assertEquals("eisbn", Au.EISBN);
     assertEquals("isbn", Au.ISBN);
@@ -139,6 +141,7 @@ public class TestAu {
     assertNull(au.getAuid());
     assertNull(au.getAuidPlus());
     assertNull(au.getComputedPlugin());
+    assertNull(au.getDoi());
     assertNull(au.getEdition());
     assertNull(au.getEisbn());
     assertNull(au.getIsbn());
@@ -169,6 +172,8 @@ public class TestAu {
     assertSame(publisher, au.getTitle().getPublisher());
     au.put(Au.NAME, NAME_VALUE);
     assertEquals(NAME_VALUE, au.getName());
+    au.put(Au.DOI, DOI_VALUE);
+    assertEquals(DOI_VALUE, au.getDoi());
     au.put(Au.EDITION, EDITION_VALUE);
     assertEquals(EDITION_VALUE, au.getEdition());
     au.put(Au.EISBN, EISBN_VALUE);
@@ -317,6 +322,9 @@ public class TestAu {
     Au au = new Au(null, title);
     
     // Test AU traits
+    au.put(Au.DOI, DOI_VALUE);
+    assertEquals(DOI_VALUE, Au.traitFunctor("au:doi").apply(au));
+    assertSame(Au.traitFunctor("au:doi"), Au.traitFunctor("doi"));
     au.put(Au.EDITION, EDITION_VALUE);
     assertEquals(EDITION_VALUE, Au.traitFunctor("au:edition").apply(au));
     assertSame(Au.traitFunctor("au:edition"), Au.traitFunctor("edition"));
@@ -386,10 +394,9 @@ public class TestAu {
     // Test title traits
     titleMap.put(Title.NAME, TestTitle.NAME_VALUE);
     assertEquals(TestTitle.NAME_VALUE, Au.traitFunctor("title:name").apply(au));
-    assertSame(Au.traitFunctor("title:name"), Au.traitFunctor("title"));
+    assertEquals(TestTitle.NAME_VALUE, Au.traitFunctor("title").apply(au)); // FIXME doesn't test a computed title name
     titleMap.put(Title.DOI, TestTitle.DOI_VALUE);
     assertEquals(TestTitle.DOI_VALUE, Au.traitFunctor("title:doi").apply(au));
-    assertSame(Au.traitFunctor("title:doi"), Au.traitFunctor("doi"));
     titleMap.put(Title.EISSN, TestTitle.EISSN_VALUE);
     assertEquals(TestTitle.EISSN_VALUE, Au.traitFunctor("title:eissn").apply(au));
     assertSame(Au.traitFunctor("title:eissn"), Au.traitFunctor("eissn"));
@@ -409,7 +416,7 @@ public class TestAu {
     // Test publisher traits
     publisherMap.put(Publisher.NAME, TestPublisher.NAME_VALUE);
     assertEquals(TestPublisher.NAME_VALUE, Au.traitFunctor("publisher:name").apply(au));
-    assertEquals(TestPublisher.NAME_VALUE, Au.traitFunctor("publisher").apply(au));
+    assertEquals(TestPublisher.NAME_VALUE, Au.traitFunctor("publisher").apply(au)); // FIXME doesn't test a computed publisher name
     publisherMap.put(TestPublisher.FOO_KEY, TestPublisher.FOO_VALUE);
     assertEquals(TestPublisher.FOO_VALUE, Au.traitFunctor(String.format("publisher:%s", TestPublisher.FOO_KEY)).apply(au));
     assertNull(Au.traitFunctor(String.format("publisher:X%s", TestPublisher.FOO_KEY)).apply(au));
